@@ -1,59 +1,4 @@
-﻿<!--<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MQTT Web App</title>-->
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.9/signalr.min.js"></script>-->
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.0/signalr.min.js"></script>
-</head>
-<body>
-    <h1>MQTT Web App</h1>
-
-    <h2>Messages</h2>
-    <ul id="messagesList"></ul>
-
-    <h2>Subscribed Topics</h2>
-    <ul id="topicsList"></ul>
-
-    <script>
-        const connection = new signalR.HubConnectionBuilder()
-            .withUrl("/mqtthub")
-            .build();
-
-        connection.on("ReceiveMessage", (topic, message) => {
-            const li = document.createElement("li");
-            li.textContent = `${topic}: ${message}`;
-            document.getElementById("messagesList").appendChild(li);
-        });
-
-        connection.on("ReceiveAvailableTopics", (topics) => {
-            const topicsList = document.getElementById("topicsList");
-            topicsList.innerHTML = ''; // Clear existing list
-            topics.forEach(topic => {
-                const li = document.createElement("li");
-                li.textContent = topic;
-                topicsList.appendChild(li);
-            });
-        });
-
-        //connection.start().catch(err => console.error(err.toString()));
-
-        connection.start()
-            .then(() => {
-                console.log('SignalR connection established');
-                console.log('Connection ID:', connection.connectionId);
-                connection.invoke("SendAvailableTopics");
-            })
-            .catch(err => {
-                console.error('SignalR connection error:', err.toString());
-            });
-    </script>
-</body>
-</html>-->
-
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -92,7 +37,8 @@
 
         // Connect to the SignalR hub
         var connection = new signalR.HubConnectionBuilder()
-            .withUrl("https://localhost:7139/mqttHub") // Ensure this matches the hub endpoint in your backend
+            //.withUrl("https://localhost:7139/mqttHub")
+            .withUrl(`${window.location.origin}/mqttHub`)
             .configureLogging(signalR.LogLevel.Information)
             .build();
 

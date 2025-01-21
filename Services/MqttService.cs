@@ -29,14 +29,6 @@ public class MqttService
             Console.WriteLine("Connected to MQTT broker");
 
             await SubscribeToTopics();
-
-            //var subscribeOptions = new MqttClientSubscribeOptionsBuilder()
-            //    .WithTopicFilter("rsa/mainpage/line_status")
-            //    .Build();
-
-            //await _mqttClient.SubscribeAsync(subscribeOptions);
-
-            //Console.WriteLine("Subscribed to topic: rsa/mainpage/line_status");
         };
 
         _mqttClient.DisconnectedAsync += async e => 
@@ -47,8 +39,6 @@ public class MqttService
         _mqttClient.ApplicationMessageReceivedAsync += async e =>
         {
             Console.WriteLine($"Received message: {Encoding.UTF8.GetString(e.ApplicationMessage.Payload)}");
-            
-            //return Task.CompletedTask;
 
             //System.Diagnostics.Debug.WriteLine("Message received event triggered.");
             var message = e.ApplicationMessage;
@@ -78,19 +68,5 @@ public class MqttService
         {
             Console.WriteLine($"Subscription failed: {ex.Message}");
         }
-    }
-
-    //private async Task SubscribeToTopic(string topic)
-    //{
-    //    if (!_subscribedTopics.Contains(topic))
-    //    {
-    //        await _mqttClient.SubscribeAsync(new MqttTopicFilterBuilder().WithTopic(topic).Build());
-    //        _subscribedTopics.Add(topic);
-    //    }
-    //}
-
-    public List<string> GetSubscribedTopics()
-    {
-        return new List<string>(_subscribedTopics);
     }
 }

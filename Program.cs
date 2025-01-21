@@ -11,7 +11,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin", policy =>
     {
-        policy.WithOrigins("http://localhost:5000") // Replace with your frontend URL
+        policy.WithOrigins("http://localhost:5000") 
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
@@ -26,7 +26,7 @@ app.UseStaticFiles();
 // Enable routing
 app.UseRouting();
 
-// Enable CORS (make sure it's here, after UseRouting)
+// Enable CORS
 app.UseCors("AllowSpecificOrigin");
 
 // Map SignalR hub
