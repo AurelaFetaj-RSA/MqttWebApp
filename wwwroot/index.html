@@ -1,0 +1,126 @@
+﻿<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MQTT Web App</title>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.9/signalr.min.js"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.0/signalr.min.js"></script>
+</head>
+<body>
+    <h1>MQTT Web App</h1>
+
+    <h2>Messages</h2>
+    <ul id="messagesList"></ul>
+
+    <h2>Subscribed Topics</h2>
+    <ul id="topicsList"></ul>
+
+    <script>
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/mqtthub")
+            .build();
+
+        connection.on("ReceiveMessage", (topic, message) => {
+            const li = document.createElement("li");
+            li.textContent = `${topic}: ${message}`;
+            document.getElementById("messagesList").appendChild(li);
+        });
+
+        connection.on("ReceiveAvailableTopics", (topics) => {
+            const topicsList = document.getElementById("topicsList");
+            topicsList.innerHTML = ''; // Clear existing list
+            topics.forEach(topic => {
+                const li = document.createElement("li");
+                li.textContent = topic;
+                topicsList.appendChild(li);
+            });
+        });
+
+        //connection.start().catch(err => console.error(err.toString()));
+
+        connection.start()
+            .then(() => {
+                console.log('SignalR connection established');
+                console.log('Connection ID:', connection.connectionId);
+                connection.invoke("SendAvailableTopics");
+            })
+            .catch(err => {
+                console.error('SignalR connection error:', err.toString());
+            });
+    </script>
+</body>
+</html>-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MQTT Web App</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.0/signalr.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>MQTT Message Viewer</h1>
+        <!--<div>
+        <h3>Messages:</h3>
+        <ul id="messagesList"></ul>
+    </div>-->
+
+        <div>
+            <!-- Line status display -->
+            <h3>Line Status:</h3>
+            <label id="lineStatusLabel">Waiting for message...</label>
+        </div>
+
+        <div>
+            <!-- M1 counter display -->
+            <h3>M1 Counter:</h3>
+            <label id="m1CounterLabel">Waiting for message...</label>
+        </div>
+
+        <div>
+            <h3>Messages:</h3>
+            <ul id="messagesList"></ul>
+        </div>
+    </div>
+
+    <script>
+        "use strict";
+
+        // Connect to the SignalR hub
+        var connection = new signalR.HubConnectionBuilder()
+            .withUrl("https://localhost:7139/mqttHub") // Ensure this matches the hub endpoint in your backend
+            .configureLogging(signalR.LogLevel.Information)
+            .build();
+
+        // Listen for messages from the backend
+        connection.on("ReceiveMessage", function (topic, message) {
+            var li = document.createElement("li");
+            li.textContent = `Topic: ${topic}, Message: ${message}`;
+            //li.textContent = `Message: ${message}`;
+            document.getElementById("messagesList").appendChild(li);
+        
+
+            if (topic === "rsa/mainpage/line_status") {
+                // Update the Line Status label with the message
+                document.getElementById("lineStatusLabel").textContent = message;
+            }
+            if (topic === "rsa/mainpage/m1_counter") {
+                // Update the M1 Counter label with the message
+                document.getElementById("m1CounterLabel").textContent = message;
+            }
+
+        });
+
+        // Start the SignalR connection
+        connection.start().then(function () {
+            console.log("Connected to SignalR hub!");
+        }).catch(function (err) {
+            console.error("Error connecting to SignalR:", err.toString());
+        });
+    </script>
+</body>
+</html>
