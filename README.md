@@ -11,7 +11,7 @@ This project is a learning exercise to understand and use web MQTT brokers. It d
 
 ## Technologies Used
 - **Frontend**: HTML, CSS, JavaScript
-- **Backend**: ASP.NET Core
+- **Backend**: ASP.NET Core, SignalR
 - **MQTT Broker**: Mosquitto
 - **MQTT Library**: MQTTnet
 
